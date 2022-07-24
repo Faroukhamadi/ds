@@ -1,8 +1,9 @@
 package ll_test
 
 import (
-	"github.com/Faroukhamadi/ds/ll"
 	"testing"
+
+	"github.com/Faroukhamadi/ds/ll"
 )
 
 func TestNew(t *testing.T) {
@@ -17,6 +18,52 @@ func TestNew(t *testing.T) {
 
 		AssertNil(t, head.Next)
 	})
+}
+
+func TestAppend(t *testing.T) {
+	testCases := []struct {
+		want any
+	}{
+		{want: 2},
+		{want: "hello"},
+		{want: 'a'},
+	}
+	for _, tC := range testCases {
+		t.Run("testing with generics", func(t *testing.T) {
+			head := ll.New(1)
+			head = ll.Append(head, tC.want)
+
+			AssertEqual(t, head.Next.Val, tC.want)
+		})
+	}
+}
+
+func TestPrepend(t *testing.T) {
+	testCases := []struct {
+		want any
+	}{
+		{want: 2},
+		{want: "hello"},
+		{want: 'a'},
+	}
+	for _, tC := range testCases {
+		t.Run("testing with generics", func(t *testing.T) {
+			head := ll.New(1)
+			head = ll.Prepend(head, tC.want)
+
+			AssertEqual(t, head.Val, tC.want)
+		})
+	}
+}
+
+func TestReverse(t *testing.T) {
+	head := ll.New(1)
+	head = ll.Append(head, 2)
+	head = ll.Append(head, 3)
+	head = ll.Append(head, 4)
+
+	head = ll.Reverse(head)
+	AssertEqual(t, head.Val, 4)
 }
 
 func AssertEqual(t *testing.T, got, want any) {

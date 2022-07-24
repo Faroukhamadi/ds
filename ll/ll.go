@@ -2,7 +2,6 @@ package ll
 
 import (
 	"fmt"
-	"log"
 )
 
 type ListNode struct {
@@ -42,27 +41,10 @@ func Append(head *ListNode, val any) *ListNode {
 }
 
 func Prepend(head *ListNode, val any) *ListNode {
-	log.Println("wohooo we are inside prepend function")
 	newHead := New(val)
 	newHead.Next = head
 	head = newHead
 	return head
-}
-
-// func (l *ListNode) Prepend(val any) {
-// 	head := New(val)
-// 	next := l.Next
-// 	l.Next = head
-// 	head.Next = next
-// 	swap(&l.Val, &head.Val)
-// }
-
-func swap[T any, PtrT *T](a, b PtrT) {
-	fmt.Println("values before swap: ", *a, *b)
-	aux := *a
-	*a = *b
-	*b = aux
-	fmt.Println("values after swap: ", *a, *b)
 }
 
 func Reverse(head *ListNode) *ListNode {
