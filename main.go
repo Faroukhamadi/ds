@@ -1,25 +1,17 @@
 package main
 
-import "github.com/Faroukhamadi/ds/ll"
+import (
+	"github.com/Faroukhamadi/ds/ll"
+)
 
 func main() {
-	// -----------------START----------------------------
-	head := ll.New(1)
-	head = ll.Append(head, 2)
-	head = ll.Prepend(head, 0)
+	head := ll.New("hello")
+	head = ll.Append(head, "this")
+	head = ll.Append(head, "is")
+	head = ll.Append(head, "my")
+	head = ll.Append(head, "linked")
+	head = ll.Append(head, "list")
+	head = ll.Append(head, "sentence")
+
 	head.Print()
-	// -----------------END----------------------------
-	// head.Print()
-
-	// head := &ListNode{Val: 1}
-	// second := &ListNode{Val: 2}
-	// third := &ListNode{Val: 3}
-
-	// head.Next = second
-	// second.Next = third
-	// third.Next = nil
-
-	// fmt.Println(head.Val)
-	// fmt.Println(second.Val)
-	// fmt.Println(third.Val)
 }

@@ -9,8 +9,8 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func New(T any) *ListNode {
-	return &ListNode{Val: T}
+func New(val any) *ListNode {
+	return &ListNode{Val: val}
 }
 
 func (l *ListNode) Print() {
@@ -30,6 +30,16 @@ func (l *ListNode) IsInterfaceNil() bool {
 	return false
 }
 
+// func Append(head *ListNode, val any) *ListNode {
+// 	newTail := New(val)
+// 	cur := head
+// 	for cur.Next != nil {
+// 		cur = cur.Next
+// 	}
+// 	cur.Next = newTail
+// 	return cur
+// }
+
 func Append(head *ListNode, val any) *ListNode {
 	newTail := New(val)
 	cur := head
@@ -37,7 +47,7 @@ func Append(head *ListNode, val any) *ListNode {
 		cur = cur.Next
 	}
 	cur.Next = newTail
-	return cur
+	return head
 }
 
 func Prepend(head *ListNode, val any) *ListNode {
