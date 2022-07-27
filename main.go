@@ -5,11 +5,10 @@ import (
 )
 
 func main() {
-	head := ll.New("")
-	head = ll.Append(head, "")
-	head = ll.Append(head, "")
-	head = ll.Append(head, "")
-	head = ll.Append(head, "")
-	head.Print()
+	head := ll.New("abc")
+	head = ll.Append(head, "bcd")
+	head = ll.Append(head, "cde")
+	head = ll.Prepend(head, "prepended")
 
+	// head.Print()
 }

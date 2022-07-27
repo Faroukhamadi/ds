@@ -9,10 +9,11 @@ import (
 type ListNode[T constraints.Ordered] struct {
 	Val  T
 	Next *ListNode[T]
+	len  int
 }
 
 func New[T constraints.Ordered](val T) *ListNode[T] {
-	return &ListNode[T]{Val: val}
+	return &ListNode[T]{Val: val, len: 1}
 }
 
 func (l *ListNode[T]) Print() {
@@ -29,7 +30,12 @@ func (l *ListNode[T]) IsInterfaceNil() bool {
 	return l == nil
 }
 
+func Len[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], int) {
+	return head, head.len
+}
+
 func Append[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
+	head.len++
 	newTail := New(val)
 	cur := head
 	for cur.Next != nil {
@@ -40,7 +46,9 @@ func Append[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
 }
 
 func Prepend[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
+	head.len++
 	newHead := New(val)
+	newHead.len = head.len
 	newHead.Next = head
 	head = newHead
 	return head
@@ -69,6 +77,32 @@ func Sort[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 	left := Sort(head)
 	right := Sort(mid)
 	return merge(left, right)
+}
+
+func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListNode[T], error) {
+	if pos < 1 || pos > head.len+1 {
+		return nil, fmt.Errorf("entered position is not valid")
+	}
+	head.len++
+	if pos == 1 {
+		head = Prepend(head, val)
+		return head, nil
+	} else if pos == head.len+1 {
+		head = Append(head, val)
+		return head, nil
+	}
+	cur := head
+	for pos > 0 {
+		if pos == 0 {
+			newNode := New(val)
+			cur.Next = newNode
+			newNode.Next = cur.Next.Next
+		} else {
+			cur = cur.Next
+		}
+		pos--
+	}
+	return head, nil
 }
 
 func getMid[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
