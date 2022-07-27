@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Faroukhamadi/ds/ll"
+	"golang.org/x/exp/constraints"
 )
 
 func TestNew(t *testing.T) {
@@ -22,16 +23,14 @@ func TestNew(t *testing.T) {
 
 func TestAppend(t *testing.T) {
 	testCases := []struct {
-		want any
+		want int
 	}{
 		{want: 2},
-		{want: "hello"},
-		{want: 'a'},
 	}
 	for _, tC := range testCases {
 		t.Run("testing with generics", func(t *testing.T) {
 			head := ll.New(1)
-			head = ll.Append(head, tC.want)
+			head = ll.Append[int](head, tC.want)
 
 			AssertEqual(t, head.Next.Val, tC.want)
 		})
@@ -40,11 +39,9 @@ func TestAppend(t *testing.T) {
 
 func TestPrepend(t *testing.T) {
 	testCases := []struct {
-		want any
+		want int
 	}{
 		{want: 2},
-		{want: "hello"},
-		{want: 'a'},
 	}
 	for _, tC := range testCases {
 		t.Run("testing with generics", func(t *testing.T) {
@@ -73,7 +70,7 @@ func AssertEqual(t *testing.T, got, want any) {
 	}
 }
 
-func AssertNil(t *testing.T, got *ll.ListNode) {
+func AssertNil[T constraints.Ordered](t *testing.T, got *ll.ListNode[T]) {
 	t.Helper()
 	if got.IsInterfaceNil() == false {
 		t.Errorf("got %+v, want nil", got)
