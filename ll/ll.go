@@ -30,8 +30,8 @@ func (l *ListNode[T]) IsInterfaceNil() bool {
 	return l == nil
 }
 
-func Len[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], int) {
-	return head, head.len
+func (l *ListNode[T]) Len() int {
+	return l.len
 }
 
 func Append[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
@@ -81,13 +81,14 @@ func Sort[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 
 func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListNode[T], error) {
 	if pos < 1 || pos > head.len+1 {
-		return nil, fmt.Errorf("entered position is not valid")
+		return nil, fmt.Errorf("[ERROR] entered position is not valid")
 	}
 	head.len++
 	if pos == 1 {
 		head = Prepend(head, val)
 		return head, nil
-	} else if pos == head.len+1 {
+	} else if pos == head.len {
+		fmt.Println("pos is length")
 		head = Append(head, val)
 		return head, nil
 	}
