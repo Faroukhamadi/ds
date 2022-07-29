@@ -79,6 +79,26 @@ func Sort[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 	return merge(left, right)
 }
 
+func Shift[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
+	if head == nil {
+		return nil, fmt.Errorf("[ERROR] head cannot be nil")
+	}
+	head = head.Next
+	return head, nil
+}
+
+func Pop[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
+	if head == nil {
+		return nil, fmt.Errorf("[ERROR] head cannot be nil")
+	}
+	cur := head
+	for cur.Next.Next != nil {
+		cur = cur.Next
+	}
+	cur.Next = nil
+	return head, nil
+}
+
 func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListNode[T], error) {
 	if pos < 1 || pos > head.len+1 {
 		return nil, fmt.Errorf("[ERROR] entered position is not valid")
@@ -91,7 +111,6 @@ func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListN
 		head = Append(head, val)
 		return head, nil
 	}
-	fmt.Println("we are neither at prepend nor append")
 	cur := head
 	for i := 0; i < pos; i++ {
 		if i == pos-2 {

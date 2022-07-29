@@ -1,19 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/Faroukhamadi/ds/ll"
 )
 
 func main() {
-	head := ll.New("abc")
-	head = ll.Append(head, "bcd")
+	head := ll.New("a")
+	head = ll.Append(head, "b")
+	head = ll.Append(head, "c")
+	head = ll.Append(head, "d")
+	head = ll.Append(head, "e")
 
-	head, err := ll.InsertPos(head, 1, "cde")
+	head.Print()
+	head, err := ll.Pop(head)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
-
 	head.Print()
 }
