@@ -8,8 +8,9 @@ import (
 
 func main() {
 	head := ll.New("abc")
+	head = ll.Append(head, "bcd")
 
-	head, err := ll.InsertPos(head, 1, "bcd")
+	head, err := ll.InsertPos(head, 1, "cde")
 	if err != nil {
 		fmt.Println(err)
 	}

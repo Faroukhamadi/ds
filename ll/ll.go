@@ -88,20 +88,21 @@ func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListN
 		head = Prepend(head, val)
 		return head, nil
 	} else if pos == head.len {
-		fmt.Println("pos is length")
 		head = Append(head, val)
 		return head, nil
 	}
+	fmt.Println("we are neither at prepend nor append")
 	cur := head
-	for pos > 0 {
-		if pos == 0 {
+	for i := 0; i < pos; i++ {
+		if i == pos-2 {
 			newNode := New(val)
+			next := cur.Next
 			cur.Next = newNode
-			newNode.Next = cur.Next.Next
+			newNode.Next = next
+			break
 		} else {
 			cur = cur.Next
 		}
-		pos--
 	}
 	return head, nil
 }
