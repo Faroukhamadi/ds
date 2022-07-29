@@ -14,7 +14,7 @@ func main() {
 	head = ll.Append(head, "e")
 
 	head.Print()
-	head, err := ll.Pop(head)
+	head, err := ll.DeletePos(head, 2)
 	if err != nil {
 		log.Println(err)
 	}

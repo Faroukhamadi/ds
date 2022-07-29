@@ -99,6 +99,30 @@ func Pop[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	return head, nil
 }
 
+func DeletePos[T constraints.Ordered](head *ListNode[T], pos int) (*ListNode[T], error) {
+	if pos < 1 || pos > head.len {
+		return nil, fmt.Errorf("[ERROR] entered position is not valid")
+	}
+	head.len++
+	if pos == 1 {
+		head, _ := Shift(head)
+		return head, nil
+	} else if pos == head.len {
+		head, _ := Pop(head)
+		return head, nil
+	}
+	cur := head
+	for i := 0; i < pos; i++ {
+		if i == pos-2 {
+			cur.Next = cur.Next.Next
+			break
+		} else {
+			cur = cur.Next
+		}
+	}
+	return head, nil
+}
+
 func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListNode[T], error) {
 	if pos < 1 || pos > head.len+1 {
 		return nil, fmt.Errorf("[ERROR] entered position is not valid")
