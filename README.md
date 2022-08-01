@@ -12,7 +12,7 @@ With a [correctly configured](https://golang.org/doc/install#testing) Go toolcha
 go get -u github.com/Faroukhamadi/ds
 ```
 
-## Example
+## Basic Linked List Example
 
 ```go
 func main() {
