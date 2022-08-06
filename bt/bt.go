@@ -51,3 +51,15 @@ func IsSameTree[T constraints.Ordered](p, q *TreeNode[T]) bool {
 
 	return p.Val == q.Val && IsSameTree(p.Left, q.Left) && IsSameTree(p.Right, q.Right)
 }
+
+func IsSubtree[T constraints.Ordered](p, q *TreeNode[T]) bool {
+	if q == nil {
+		return true
+	}
+
+	if p == nil {
+		return false
+	}
+
+	return IsSameTree(p, q) || IsSubtree(p.Left, q) || IsSubtree(p.Right, q)
+}
