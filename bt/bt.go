@@ -39,3 +39,15 @@ func Print[T constraints.Ordered](root *TreeNode[T], level int) {
 		Print(root.Left, level+1)
 	}
 }
+
+func IsSameTree[T constraints.Ordered](p, q *TreeNode[T]) bool {
+	if p == nil && q == nil {
+		return true
+	}
+
+	if p == nil || q == nil {
+		return false
+	}
+
+	return p.Val == q.Val && IsSameTree(p.Left, q.Left) && IsSameTree(p.Right, q.Right)
+}
