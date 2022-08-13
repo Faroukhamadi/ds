@@ -1,28 +1,28 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/Faroukhamadi/ds/bt"
+	"github.com/Faroukhamadi/ds/ll"
 )
 
 func main() {
+	head := ll.New("b")
+	head = ll.Append(head, "a")
+	head = ll.Append(head, "a")
+	head = ll.Append(head, "d")
+	head = ll.Append(head, "d")
+	head = ll.Append(head, "c")
+	head = ll.Append(head, "c")
 
-	p := bt.New(1)
-	q := bt.New(2)
-	x := bt.New(3)
-	y := bt.New(4)
-	a := bt.New(5)
-	b := bt.New(6)
+	head.Print()
 
-	p.Left = q
-	q.Left = x
-	x.Left = y
-	y.Left = a
-	a.Right = b
-	b.Left = nil
+	head = ll.Sort(head)
 
-	bt.Print(p, 0)
+	head, err := ll.RemoveDuplicates(head)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Println("max depth is: ", bt.MaxDepth(p))
+	head.Print()
 }
