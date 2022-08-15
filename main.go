@@ -8,6 +8,7 @@ import (
 
 func main() {
 	head := ll.New("b")
+
 	head = ll.Append(head, "a")
 	head = ll.Append(head, "a")
 	head = ll.Append(head, "d")
@@ -19,6 +20,7 @@ func main() {
 
 	head = ll.Sort(head)
 
+	head = nil
 	head, err := ll.RemoveDuplicates(head)
 	if err != nil {
 		log.Fatal(err)
