@@ -8,6 +8,7 @@ import (
 
 type ListNode[T constraints.Ordered] struct {
 	Val  T
+	Key  T
 	Next *ListNode[T]
 	len  int
 }
