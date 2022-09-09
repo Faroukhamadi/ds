@@ -87,6 +87,24 @@ func Shift[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	return head, nil
 }
 
+func RemoveDuplicates[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
+	if head == nil {
+		return nil, fmt.Errorf("[ERROR] head cannot be nil")
+	}
+	cur := head
+	var next_next *ListNode[T]
+
+	for cur.Next != nil {
+		if cur.Val == cur.Next.Val {
+			next_next = cur.Next.Next
+			cur.Next = next_next
+		} else {
+			cur = cur.Next
+		}
+	}
+	return head, nil
+}
+
 func Pop[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	if head == nil {
 		return nil, fmt.Errorf("[ERROR] head cannot be nil")

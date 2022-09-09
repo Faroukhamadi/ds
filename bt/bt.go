@@ -2,6 +2,7 @@ package bt
 
 import (
 	"fmt"
+	"math"
 
 	"golang.org/x/exp/constraints"
 )
@@ -62,4 +63,48 @@ func IsSubtree[T constraints.Ordered](p, q *TreeNode[T]) bool {
 	}
 
 	return IsSameTree(p, q) || IsSubtree(p.Left, q) || IsSubtree(p.Right, q)
+}
+
+func helper[T constraints.Ordered](root *TreeNode[T]) int {
+	if root == nil {
+		return 0
+	}
+
+	lh := helper(root.Left)
+	if lh == -1 {
+		return -1
+	}
+
+	rh := helper(root.Left)
+	if rh == -1 {
+		return -1
+	}
+
+	if math.Abs(float64(lh)-float64(rh)) > 1 {
+		return -1
+	}
+
+	return int(math.Max(float64(lh), float64(rh))) + 1
+}
+
+func IsBalanced[T constraints.Ordered](root *TreeNode[T]) bool {
+	h := helper(root)
+	if h == -1 {
+		return false
+	}
+	return true
+}
+
+func MaxDepth[T constraints.Ordered](root *TreeNode[T]) int {
+	if root == nil {
+		return 0
+	}
+	return max(MaxDepth(root.Left), MaxDepth(root.Right)) + 1
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
