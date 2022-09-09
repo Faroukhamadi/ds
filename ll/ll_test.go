@@ -30,7 +30,7 @@ func TestAppend(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run("testing with generics", func(t *testing.T) {
 			head := ll.New(1)
-			head = ll.Append[int](head, tC.want)
+			head = ll.Append(head, tC.want)
 
 			AssertEqual(t, head.Next.Val, tC.want)
 		})
