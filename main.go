@@ -7,5 +7,11 @@ import (
 )
 
 func main() {
-	fmt.Println(hm.HashString("cat"))
+	hashMap := hm.New[int, int]()
+	fmt.Println(hashMap)
+
+	hashMap.Set(47, 2)
+
+	fmt.Println(hashMap)
+
 }
