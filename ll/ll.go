@@ -11,8 +11,8 @@ type ListNode[K string | int, V string | int] struct {
 	len  int
 }
 
-func New[K string | int, V string | int](val V) *ListNode[K, V] {
-	return &ListNode[K, V]{Val: val, len: 1}
+func New[K string | int, V string | int](key K, val V) *ListNode[K, V] {
+	return &ListNode[K, V]{Val: val, len: 1, Key: key}
 }
 
 func (l *ListNode[K, V]) Print() {
@@ -33,9 +33,9 @@ func (l *ListNode[K, V]) Len() int {
 	return l.len
 }
 
-func Append[K string | int, V string | int](head *ListNode[K, V], val V) *ListNode[K, V] {
+func Append[K string | int, V string | int](head *ListNode[K, V], key K, val V) *ListNode[K, V] {
 	head.len++
-	newTail := New[K](val)
+	newTail := New(key, val)
 	cur := head
 	for cur.Next != nil {
 		cur = cur.Next
@@ -44,9 +44,9 @@ func Append[K string | int, V string | int](head *ListNode[K, V], val V) *ListNo
 	return head
 }
 
-func Prepend[K string | int, V string | int](head *ListNode[K, V], val V) *ListNode[K, V] {
+func Prepend[K string | int, V string | int](head *ListNode[K, V], key K, val V) *ListNode[K, V] {
 	head.len++
-	newHead := New[K](val)
+	newHead := New(key, val)
 	newHead.len = head.len
 	newHead.Next = head
 	head = newHead
@@ -140,22 +140,22 @@ func DeletePos[K string | int, V string | int](head *ListNode[K, V], pos int) (*
 	return head, nil
 }
 
-func InsertPos[K string | int, V string | int](head *ListNode[K, V], pos int, val V) (*ListNode[K, V], error) {
+func InsertPos[K string | int, V string | int](head *ListNode[K, V], pos int, key K, val V) (*ListNode[K, V], error) {
 	if pos < 1 || pos > head.len+1 {
 		return nil, fmt.Errorf("[ERROR] entered position is not valid")
 	}
 	head.len++
 	if pos == 1 {
-		head = Prepend(head, val)
+		head = Prepend(head, key, val)
 		return head, nil
 	} else if pos == head.len {
-		head = Append(head, val)
+		head = Append(head, key, val)
 		return head, nil
 	}
 	cur := head
 	for i := 0; i < pos; i++ {
 		if i == pos-2 {
-			newNode := New[K](val)
+			newNode := New(key, val)
 			next := cur.Next
 			cur.Next = newNode
 			newNode.Next = next

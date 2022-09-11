@@ -1,6 +1,7 @@
 package hm
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 	"reflect"
@@ -51,12 +52,34 @@ func (h *HashMap[K, V]) Set(key K, val V) {
 		index = HashInt(key, h.Capacity)
 	}
 
-	log.Println("index is: ", index)
-
+	// treat setting the same key by replacing
 	if h.Arr[index] == nil {
-		h.Arr[index] = ll.New[K](val)
-		h.Arr[index].Key = key
-		h.Arr[index].Print()
+		h.Arr[index] = ll.New(key, val)
+	} else {
+		h.Arr[index] = ll.Append(h.Arr[index], key, val)
+	}
+}
+
+func (h *HashMap[K, V]) Get(key K) {
+	var index int
+	if reflect.TypeOf(key).Kind() == reflect.String {
+		index = HashStr(key, h.Capacity)
+	} else if reflect.TypeOf(key).Kind() == reflect.Int {
+		index = HashInt(key, h.Capacity)
+	}
+
+	// treat setting the same key by replacing
+	if h.Arr[index] == nil {
+		fmt.Println("THE KEY YOU'RE LOOKING FOR DOESN'T EXIST")
+	} else {
+		cur := h.Arr[index]
+		for cur != nil {
+			if cur.Key == key {
+				log.Println("FOUND THE VALUE: ", cur.Val)
+				return
+			}
+			cur = cur.Next
+		}
 	}
 }
 
