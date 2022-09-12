@@ -16,9 +16,7 @@ type HashMap[K string | int, V string | int] struct {
 	Entries    int
 	LoadFactor float64
 	Capacity   int
-	// IMPORTANT: problem with this is that the key and value have to be the same
-	// Change node to ListNode[K, V]
-	Arr []*ll.ListNode[K, V]
+	Arr        []*ll.ListNode[K, V]
 }
 
 func New[K string | int, V string | int]() *HashMap[K, V] {
@@ -58,11 +56,17 @@ func (h *HashMap[K, V]) Set(key K, val V) {
 	replaced := false
 	if h.Arr[index] == nil {
 		h.Arr[index] = ll.New(key, val)
+		h.Entries++
+		return
 	} else {
 		h.Arr[index], replaced = ll.Append(h.Arr[index], key, val)
 	}
 	if !replaced {
 		h.Entries++
+		if h.Entries == int(float64(h.Capacity)*h.LoadFactor) {
+			h.Arr = append(h.Arr, make([]*ll.ListNode[K, V], h.Capacity)...)
+			h.Capacity *= 2
+		}
 	}
 }
 
@@ -86,5 +90,3 @@ func (h *HashMap[K, V]) Get(key K) V {
 	}
 	return getZero[V]()
 }
-
-// Increase size when Entries = capacity * loadFactor
