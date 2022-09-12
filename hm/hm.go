@@ -1,13 +1,16 @@
 package hm
 
 import (
-	"fmt"
-	"log"
 	"math/big"
 	"reflect"
 
 	"github.com/Faroukhamadi/ds/ll"
 )
+
+func getZero[V any]() V {
+	var result V
+	return result
+}
 
 type HashMap[K string | int, V string | int] struct {
 	Entries    int
@@ -52,15 +55,18 @@ func (h *HashMap[K, V]) Set(key K, val V) {
 		index = HashInt(key, h.Capacity)
 	}
 
-	// treat setting the same key by replacing
+	replaced := false
 	if h.Arr[index] == nil {
 		h.Arr[index] = ll.New(key, val)
 	} else {
-		h.Arr[index] = ll.Append(h.Arr[index], key, val)
+		h.Arr[index], replaced = ll.Append(h.Arr[index], key, val)
+	}
+	if !replaced {
+		h.Entries++
 	}
 }
 
-func (h *HashMap[K, V]) Get(key K) {
+func (h *HashMap[K, V]) Get(key K) V {
 	var index int
 	if reflect.TypeOf(key).Kind() == reflect.String {
 		index = HashStr(key, h.Capacity)
@@ -68,19 +74,17 @@ func (h *HashMap[K, V]) Get(key K) {
 		index = HashInt(key, h.Capacity)
 	}
 
-	// treat setting the same key by replacing
 	if h.Arr[index] == nil {
-		fmt.Println("THE KEY YOU'RE LOOKING FOR DOESN'T EXIST")
-	} else {
-		cur := h.Arr[index]
-		for cur != nil {
-			if cur.Key == key {
-				log.Println("FOUND THE VALUE: ", cur.Val)
-				return
-			}
-			cur = cur.Next
-		}
+		return getZero[V]()
 	}
+	cur := h.Arr[index]
+	for cur != nil {
+		if cur.Key == key {
+			return cur.Val
+		}
+		cur = cur.Next
+	}
+	return getZero[V]()
 }
 
 // Increase size when Entries = capacity * loadFactor

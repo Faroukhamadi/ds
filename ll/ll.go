@@ -33,15 +33,19 @@ func (l *ListNode[K, V]) Len() int {
 	return l.len
 }
 
-func Append[K string | int, V string | int](head *ListNode[K, V], key K, val V) *ListNode[K, V] {
+func Append[K string | int, V string | int](head *ListNode[K, V], key K, val V) (*ListNode[K, V], bool) {
 	head.len++
 	newTail := New(key, val)
 	cur := head
-	for cur.Next != nil {
+	for cur.Next != nil && cur.Key != key {
 		cur = cur.Next
 	}
+	if cur.Key == key {
+		cur.Val = val
+		return head, true
+	}
 	cur.Next = newTail
-	return head
+	return head, false
 }
 
 func Prepend[K string | int, V string | int](head *ListNode[K, V], key K, val V) *ListNode[K, V] {
@@ -149,7 +153,7 @@ func InsertPos[K string | int, V string | int](head *ListNode[K, V], pos int, ke
 		head = Prepend(head, key, val)
 		return head, nil
 	} else if pos == head.len {
-		head = Append(head, key, val)
+		head, _ = Append(head, key, val)
 		return head, nil
 	}
 	cur := head
