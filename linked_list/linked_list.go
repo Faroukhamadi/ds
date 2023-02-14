@@ -1,23 +1,21 @@
-package ll
-
-// This file is used as a util for HashMap
+package linkedlist
 
 import (
 	"fmt"
+
+	"golang.org/x/exp/constraints"
 )
 
-type ListNode[K string | int, V string | int] struct {
-	Val  V
-	Key  K
-	Next *ListNode[K, V]
+type ListNode[T constraints.Ordered] struct {
+	Val  T
+	Next *ListNode[T]
 	len  int
 }
 
-func New[K string | int, V string | int](key K, val V) *ListNode[K, V] {
-	return &ListNode[K, V]{Val: val, len: 1, Key: key}
+func New[T constraints.Ordered](val T) *ListNode[T] {
+	return &ListNode[T]{Val: val, len: 1}
 }
-
-func (l *ListNode[K, V]) Print() {
+func (l *ListNode[T]) Print() {
 	fmt.Println("LINKED LIST")
 	cur := l
 	for cur != nil {
@@ -26,44 +24,35 @@ func (l *ListNode[K, V]) Print() {
 	}
 	fmt.Println("nil")
 }
-
-func (l *ListNode[K, V]) IsInterfaceNil() bool {
+func (l *ListNode[T]) IsInterfaceNil() bool {
 	return l == nil
 }
-
-func (l *ListNode[K, V]) Len() int {
+func (l *ListNode[T]) Len() int {
 	return l.len
 }
-
-func Append[K string | int, V string | int](head *ListNode[K, V], key K, val V) (*ListNode[K, V], bool) {
+func Append[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
 	head.len++
-	newTail := New(key, val)
+	newTail := New(val)
 	cur := head
-	for cur.Next != nil && cur.Key != key {
+	for cur.Next != nil {
 		cur = cur.Next
 	}
-	if cur.Key == key {
-		cur.Val = val
-		return head, true
-	}
 	cur.Next = newTail
-	return head, false
+	return head
 }
-
-func Prepend[K string | int, V string | int](head *ListNode[K, V], key K, val V) *ListNode[K, V] {
+func Prepend[T constraints.Ordered](head *ListNode[T], val T) *ListNode[T] {
 	head.len++
-	newHead := New(key, val)
+	newHead := New(val)
 	newHead.len = head.len
 	newHead.Next = head
 	head = newHead
 	return head
 }
-
-func Reverse[K string | int, V string | int](head *ListNode[K, V]) *ListNode[K, V] {
+func Reverse[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 	if head == nil {
 		return nil
 	}
-	var prev *ListNode[K, V]
+	var prev *ListNode[T]
 	for head != nil {
 		next := head.Next
 		head.Next = prev
@@ -72,19 +61,16 @@ func Reverse[K string | int, V string | int](head *ListNode[K, V]) *ListNode[K, 
 	}
 	return prev
 }
-
-func Sort[K string | int, V string | int](head *ListNode[K, V]) *ListNode[K, V] {
+func Sort[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 	if head == nil || head.Next == nil {
 		return head
 	}
-
 	mid := getMid(head)
 	left := Sort(head)
 	right := Sort(mid)
 	return merge(left, right)
 }
-
-func Shift[K string | int, V string | int](head *ListNode[K, V]) (*ListNode[K, V], error) {
+func Shift[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	if head == nil {
 		return nil, fmt.Errorf("[ERROR] head cannot be nil")
 	}
@@ -92,12 +78,12 @@ func Shift[K string | int, V string | int](head *ListNode[K, V]) (*ListNode[K, V
 	return head, nil
 }
 
-func RemoveDuplicates[K string | int, V string | int](head *ListNode[K, V]) (*ListNode[K, V], error) {
+func RemoveDuplicates[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	if head == nil {
 		return nil, fmt.Errorf("[ERROR] head cannot be nil")
 	}
 	cur := head
-	var next_next *ListNode[K, V]
+	var next_next *ListNode[T]
 
 	for cur.Next != nil {
 		if cur.Val == cur.Next.Val {
@@ -110,7 +96,7 @@ func RemoveDuplicates[K string | int, V string | int](head *ListNode[K, V]) (*Li
 	return head, nil
 }
 
-func Pop[K string | int, V string | int](head *ListNode[K, V]) (*ListNode[K, V], error) {
+func Pop[T constraints.Ordered](head *ListNode[T]) (*ListNode[T], error) {
 	if head == nil {
 		return nil, fmt.Errorf("[ERROR] head cannot be nil")
 	}
@@ -121,8 +107,7 @@ func Pop[K string | int, V string | int](head *ListNode[K, V]) (*ListNode[K, V],
 	cur.Next = nil
 	return head, nil
 }
-
-func DeletePos[K string | int, V string | int](head *ListNode[K, V], pos int) (*ListNode[K, V], error) {
+func DeletePos[T constraints.Ordered](head *ListNode[T], pos int) (*ListNode[T], error) {
 	if pos < 1 || pos > head.len {
 		return nil, fmt.Errorf("[ERROR] entered position is not valid")
 	}
@@ -145,23 +130,22 @@ func DeletePos[K string | int, V string | int](head *ListNode[K, V], pos int) (*
 	}
 	return head, nil
 }
-
-func InsertPos[K string | int, V string | int](head *ListNode[K, V], pos int, key K, val V) (*ListNode[K, V], error) {
+func InsertPos[T constraints.Ordered](head *ListNode[T], pos int, val T) (*ListNode[T], error) {
 	if pos < 1 || pos > head.len+1 {
 		return nil, fmt.Errorf("[ERROR] entered position is not valid")
 	}
 	head.len++
 	if pos == 1 {
-		head = Prepend(head, key, val)
+		head = Prepend(head, val)
 		return head, nil
 	} else if pos == head.len {
-		head, _ = Append(head, key, val)
+		head = Append(head, val)
 		return head, nil
 	}
 	cur := head
 	for i := 0; i < pos; i++ {
 		if i == pos-2 {
-			newNode := New(key, val)
+			newNode := New(val)
 			next := cur.Next
 			cur.Next = newNode
 			newNode.Next = next
@@ -172,25 +156,21 @@ func InsertPos[K string | int, V string | int](head *ListNode[K, V], pos int, ke
 	}
 	return head, nil
 }
-
-func getMid[K string | int, V string | int](head *ListNode[K, V]) *ListNode[K, V] {
-	var midPrev *ListNode[K, V] = nil
+func getMid[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
+	var midPrev *ListNode[T] = nil
 	var slow, fast = head, head
 	for fast != nil && fast.Next != nil {
 		midPrev = slow
 		slow = slow.Next
 		fast = fast.Next.Next
 	}
-
 	var mid = midPrev.Next
 	midPrev.Next = nil
 	return mid
 }
-
-func merge[K string | int, V string | int](l1, l2 *ListNode[K, V]) *ListNode[K, V] {
-	var head = &ListNode[K, V]{}
+func merge[T constraints.Ordered](l1, l2 *ListNode[T]) *ListNode[T] {
+	var head = &ListNode[T]{}
 	var curr = head
-
 	for l1 != nil && l2 != nil {
 		if l1.Val < l2.Val {
 			curr.Next = l1
@@ -201,14 +181,30 @@ func merge[K string | int, V string | int](l1, l2 *ListNode[K, V]) *ListNode[K, 
 		}
 		curr = curr.Next
 	}
-
 	if l1 != nil {
 		curr.Next = l1
 	}
-
 	if l2 != nil {
 		curr.Next = l2
 	}
-
 	return head.Next
+}
+
+// func (l *ListNode[T]) Print() {
+
+func (head *ListNode[T]) HasCycle() bool {
+	if head == nil {
+		return false
+	}
+
+	slow, fast := head, head
+
+	for fast.Next != nil && fast.Next.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+		if slow == fast {
+			return true
+		}
+	}
+
+	return false
 }

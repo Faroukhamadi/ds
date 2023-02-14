@@ -1,21 +1,21 @@
-package ll_test
+package linkedlist_test
 
 import (
 	"testing"
 
-	"github.com/Faroukhamadi/ds/ll"
+	linkedlist "github.com/Faroukhamadi/ds/linked_list"
 	"golang.org/x/exp/constraints"
 )
 
 func TestNew(t *testing.T) {
 	t.Run("Right value gets assigned to node", func(t *testing.T) {
-		head := ll.New(1)
+		head := linkedlist.New(1)
 
 		AssertEqual(t, head.Val, 1)
 	})
 
 	t.Run("Next is nil if not declared", func(t *testing.T) {
-		head := ll.New(1)
+		head := linkedlist.New(1)
 
 		AssertNil(t, head.Next)
 	})
@@ -29,8 +29,8 @@ func TestAppend(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run("testing with generics", func(t *testing.T) {
-			head := ll.New(1)
-			head = ll.Append(head, tC.want)
+			head := linkedlist.New(1)
+			head = linkedlist.Append(head, tC.want)
 
 			AssertEqual(t, head.Next.Val, tC.want)
 		})
@@ -45,8 +45,8 @@ func TestPrepend(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run("testing with generics", func(t *testing.T) {
-			head := ll.New(1)
-			head = ll.Prepend(head, tC.want)
+			head := linkedlist.New(1)
+			head = linkedlist.Prepend(head, tC.want)
 
 			AssertEqual(t, head.Val, tC.want)
 		})
@@ -54,12 +54,12 @@ func TestPrepend(t *testing.T) {
 }
 
 func TestReverse(t *testing.T) {
-	head := ll.New(1)
-	head = ll.Append(head, 2)
-	head = ll.Append(head, 3)
-	head = ll.Append(head, 4)
+	head := linkedlist.New(1)
+	head = linkedlist.Append(head, 2)
+	head = linkedlist.Append(head, 3)
+	head = linkedlist.Append(head, 4)
 
-	head = ll.Reverse(head)
+	head = linkedlist.Reverse(head)
 	AssertEqual(t, head.Val, 4)
 }
 
@@ -70,7 +70,7 @@ func AssertEqual(t *testing.T, got, want any) {
 	}
 }
 
-func AssertNil[T constraints.Ordered](t *testing.T, got *ll.ListNode[T]) {
+func AssertNil[T constraints.Ordered](t *testing.T, got *linkedlist.ListNode[T]) {
 	t.Helper()
 	if got.IsInterfaceNil() == false {
 		t.Errorf("got %+v, want nil", got)
