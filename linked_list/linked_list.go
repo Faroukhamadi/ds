@@ -169,25 +169,27 @@ func getMid[T constraints.Ordered](head *ListNode[T]) *ListNode[T] {
 	return mid
 }
 func merge[T constraints.Ordered](l1, l2 *ListNode[T]) *ListNode[T] {
-	var head = &ListNode[T]{}
-	var curr = head
-	for l1 != nil && l2 != nil {
-		if l1.Val < l2.Val {
-			curr.Next = l1
-			l1 = l1.Next
-		} else {
-			curr.Next = l2
-			l2 = l2.Next
-		}
-		curr = curr.Next
-	}
-	if l1 != nil {
-		curr.Next = l1
-	}
-	if l2 != nil {
-		curr.Next = l2
-	}
-	return head.Next
+    dummy := &ListNode[T]{}
+    curr := dummy
+
+    for l1 != nil && l2 != nil {
+        if l1.Val < l2.Val {
+            curr.Next, l1 = l1, l1.Next
+        } else {
+            curr.Next, l2 = l2, l2.Next
+        }
+        curr = curr.Next
+    }
+
+    // Append remaining nodes if any
+    if l1 != nil {
+        curr.Next = l1
+    }
+    if l2 != nil {
+        curr.Next = l2
+    }
+
+    return dummy.Next
 }
 
 // func (l *ListNode[T]) Print() {
